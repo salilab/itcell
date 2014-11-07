@@ -28,7 +28,20 @@ sub get_footer {
 }
 
 sub get_index_page {
-    # TODO
+    my $self = shift;
+    my $q = $self->cgi;
+    my $greeting = <<GREETING;
+<p>MultiFit is a computational method for simultaneously fitting atomic structures
+of components into their assembly density map at resolutions as low as 25 &#8491;.
+The component positions and orientations are optimized with respect to a scoring
+function that includes the quality-of-fit of components in the map, the protrusion
+of components from the map envelope, as well as the shape complementarity between
+pairs of components.
+The scoring function is optimized by an exact inference optimizer DOMINO that
+efficiently finds the global minimum in a discrete sampling space.
+<br />&nbsp;</p>
+GREETING
+
 }
 
 sub get_submit_page {
