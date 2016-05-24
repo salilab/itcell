@@ -1,3 +1,4 @@
 Import('env')
 
 env.InstallPerl(['itcell.pm'])
+env.InstallHTML(['logo.png', 'logo2.png'])

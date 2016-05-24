@@ -27,12 +27,68 @@ sub start_html {
                           );
 }
 
+
+sub _display_content {
+  my ($self, $content) = @_;
+  print $content;
+}
+
+sub _display_web_page {
+  my ($self, $content) = @_;
+  # Call all prefix and suffix methods before printing anything, in case one
+  # of them raises an error
+  my $prefix = $self->start_html() . "<div id='container'>" . $self->get_header();
+  my $suffix = $self->get_footer() . "</div>\n" . $self->end_html;
+  my $navigation = $self->get_navigation_lab();
+  print $prefix;
+  print $navigation;
+  $self->_display_content($content);
+  print $suffix;
+}
+
+sub get_help_page {
+  my ($self, $display_type) = @_;
+  my $file;
+  if ($display_type eq "contact") {
+    $file = "contact.txt";
+  } elsif ($display_type eq "news") {
+    $file = "news.txt";
+  } elsif ($display_type eq "about") {
+    $file = "about.txt";
+  } elsif ($display_type eq "FAQ") {
+    $file = "FAQ.txt";
+  } elsif ($display_type eq "links") {
+    $file = "links.txt";
+  } elsif ($display_type eq "download") {
+    $file = "download.txt";
+  } else {
+    $file = "help.txt";
+  }
+  return $self->get_text_file($file);
+}
+
+sub new {
+  return saliweb::frontend::new(@_, @CONFIG@);
+}
+
+sub get_navigation_lab {
+  return "<div id=\"navigation_lab\">
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://salilab.org/itcell\">Web Server</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=help\">Help</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=FAQ\">FAQ</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=download\">Download</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=links\">Links</a>&nbsp;</div>\n";
+}
+
+
 sub get_navigation_links {
     my $self = shift;
     my $q = $self->cgi;
     return [
-        $q->a({-href=>$self->index_url}, "MultiFit Home"),
-        $q->a({-href=>$self->queue_url}, "Current Queue"),
+        $q->a({-href=>$self->index_url}, "ITcell Home"),
         #$q->a({-href=>$self->download_url}, "Download"),
         $q->a({-href=>$self->help_url}, "Help"),
         $q->a({-href=>$self->contact_url}, "Contact")
@@ -42,10 +98,19 @@ sub get_navigation_links {
 
 sub get_project_menu {
     my $self = shift;
-    return <<MENU;
-<p>&nbsp;</p>
-MENU
+    return "";
 }
+
+sub get_header {
+  return "<div id='header1'>
+  <table> <tbody> <tr> <td halign='left'>
+  <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo.png\" alt='Logo' align = 'left' height = '40'></td></tr>
+         <tr><td><h3><font color='#B22222'> Integrative T-cell epitope prediction</font></h3> </td></tr></table>
+      </td> <td halign='right'><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo2.png\" height = '70'></td></tr>
+  </tbody>
+  </table></div>\n";
+}
+
 
 sub get_footer {
     my $self = shift;
@@ -54,407 +119,167 @@ sub get_footer {
 <div id="address">
 <center>
 <hr />
-<table>
-<tr> <td align="center">
-<a target="_blank" href="http://bioinfo3d.cs.tau.ac.il/"><img height="25" src="$htmlroot/img/BioInfo3Dsmall.png" /></a>
-</td><td>
-<a target="_blank" href="http://bioinfo3d.cs.tau.ac.il/">
-<b>BioInfo3D</b></a> Servers for protein structure analysis and modeling.
-</td>
-</tr>
-<tr><td align="center">
-<a target="_blank" href="http://www.emdatabank.org/"><img height="25" src="$htmlroot/img/EMDBsml.gif" /></a>&nbsp;
-</td><td>
-<a target="_blank" href="http://www.emdatabank.org/"><b>EMDB</b></a> Database for electron microscopy density maps.
-</td></tr>
-</table>
-<hr />
-<br />
-<a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/21715383">
-<b>E. Tjioe,  K. Lasker, B. Webb, H. Wolfson and A. Sali, Nucleic Acids Research, (2011) <i>39,</i> W167-W170</b></a>
-&nbsp;<a target="_blank" href="http://salilab.org/pdf/Tjioe_NucleicAcidsRes_2011.pdf"><img src="$htmlroot/img/pdf.gif" alt="PDF" /></a><br />
-<br />
-<a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/20827723">
-<b>K. Lasker,  M. Topf, A. Sali and H. Wolfson, Journal of Molecular Biology, (2009) <i>388,</i> 180-194</b></a>
-&nbsp;<a target="_blank" href="http://salilab.org/pdf/Lasker_Proteins-StructFunctBioinform_2010a.pdf"><img src="$htmlroot/img/pdf.gif" alt="PDF" /></a><br />
+Contact: <script>escramble(\"dina\",\"salilab.org\")</script>
 </div>
 FOOTER
 }
 
 sub get_index_page {
-    my $self = shift;
-    my $q = $self->cgi;
-    my $greeting = <<GREETING;
-<p>MultiFit is a computational method for simultaneously fitting atomic structures
-of components into their assembly density map at resolutions as low as 25 &#8491;.
-The component positions and orientations are optimized with respect to a scoring
-function that includes the quality-of-fit of components in the map, the protrusion
-of components from the map envelope, as well as the shape complementarity between
-pairs of components.
-The scoring function is optimized by an exact inference optimizer DOMINO that
-efficiently finds the global minimum in a discrete sampling space.
-<br />&nbsp;</p>
-GREETING
-#<p>
-#You can also <a href="download.cgi">download the
-#MultiFit software</a> to run calculations on your own computer.
-#<br />&nbsp;</p>
-    return "<div id=\"resulttable\">\n" .
-           $q->h2({-align=>"left"},
-                  "MultiFit: Fitting of multiple proteins into their assembly density map") .
-           $q->start_form({-name=>"multifit_form", -method=>"post",
-                           -action=>$self->submit_url}) .
-           $q->table(
-               $q->Tr($q->td({-colspan=>2}, $greeting)) .
-               $self->get_general_information_input() .
-               $self->get_map_information_input() .
-               $self->get_optional_option() 
-           ) . 
-           $q->table(
-               $q->Tr($q->td({-colspan=>"2"}, "<left>" .
-                      $q->input({-type=>"submit", -value=>"Process job"}) .
-                      $q->input({-type=>"reset", -value=>"Reset all values"}) .
-                             "</center><p>&nbsp;</p>"))) .
-           $q->end_form .
-           "</div>\n";
-}
+  my $self = shift;
+  my $q = $self->cgi;
 
-sub get_symmetry_mode {
-    my $self = shift;
-    my $q = $self->cgi;
-    return
-        $q->Tr($q->td("Subunit pdb coordinate file",
-                       $self->help_link("file"), $q->br),
-               $q->td($q->filefield({-name=>"symm_pdb"}))) .
-        $q->Tr($q->td("Symmetry order",
-                   $self->help_link("cn_symmetry")),
-               $q->td( $q->textfield({-name=>"cn_symmetry",
-                                      -size=>"25"}))) 
-}
+  return
 
-sub get_non_symmetry_mode {
-    my ($self, $print_subunit, $start_value) = @_;
-    my $q = $self->cgi;
-    my $contents = "";
+    $q->start_form({-name=>"itcell_form", -method=>"post", -action=>$self->submit_url}) .
 
-    
-    $contents .= $q->Tr($q->td("Non-symmetry mode is currently under maintenance. Thank you."));
-    return $contents;
+    $q->start_table({ -border=>0, -cellpadding=>5, -cellspacing=>0}) .
+      $q->Tr($q->td('Select MHC type or upload peptide-MHC structure in PDB format')) . $q->end_table .
 
-    for ( my $j=0; $j < $print_subunit; $j++ ) 
-    {
-        my $pdb_name = "non_symm_pdb" . $start_value;
-        my $subunit_name = "subunit" . $start_value;
-        my $fit_opt_name = "fit_opt" . $start_value;
-        $contents .= $q->Tr($q->td("Subunit pdb coordinate file",
-                                $self->help_link("file"), $q->br,
-                                $q->filefield({-name=>$pdb_name})),
-                            $q->td("Number of copies",
-                                $self->help_link("subunit_copies"), $q->br, 
-                                $q->textfield({-name=>$subunit_name,
-                                               -size=>"5"})), 
-                            $q->td("&nbsp; &nbsp; &nbsp;"),
-                            $q->td("Fitting option:",
-                                   $self->help_link("fitting_options"), $q->br,
-                                   $q->radio_group({-name     =>$fit_opt_name,
-                                                    -values   =>['global fit','local fit'],
-                                                    -default  =>'global fit',
-                                                    -linebreak=>'false'}))) .
-                     $q->Tr($q->td());
-        $start_value++;
-    }
-    return $contents;
-}
+    $q->start_table({ -border=>0, -cellpadding=>5, -cellspacing=>0, -width=>'99%'}) .
+      $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#mhc"}, $q->b('MHC type'))]),
+             $q->td({ -align=>'left'}, [$q->popup_menu(-name=>'mhctype', -default=>'None',
+                          -values=>['None', 
+                                    'DRB1*0101','DRB1*0102','DRB1*0301','DRB1*0401','DRB1*0402','DRB1*0404','DRB1*0405',
+                                    'DRB1*0407','DRB1*0701','DRB1*0801','DRB1*0802','DRB1*1101','DRB1*1104','DRB1*1201',
+                                    'DRB1*1301','DRB1*1302','DRB1*1401','DRB1*1501','DRB1*1601','DRB4*0101','DRB4*0103',
+                                    'DRB5*0101','DQA1*0501-DQB1*0201','DQA1*0102-DQB1*0502','DQA1*0301-DQB1*0302'])]) .
+             $q->td({ -align=>'left'}, [$q->b('or') . ' upload PDB file: ' . $q->filefield({-name=>'mhcpdbfile', -size => 10})])) .
 
-sub get_more {
-    my $self = shift;
-    my $q = $self->cgi;
-    return
-       $q->Tr($q->td($q->a({-href=>'#',
-                            -id=>'moretoggle',
-                            -onClick=>"toggle_visibility_tbody('more', 'moretoggle'); " .
-                                      "return false;"},
-                                      "Show add more subunits"))) .
-       $q->tbody({-id=>'more', -style=>'display:none'},
-                 $self->get_non_symmetry_mode(3,4));
-}
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#tcrfile"}, $q->b('TCR structure'))]),
+           $q->td({ -align=>'left'}, [$q->filefield({-name=>'tcrfile', -size => 10})])) .
 
-sub get_map_information_input {
-    my $self = shift;
-    my $q = $self->cgi;
-    return
-              $q->Tr($q->td($q->h4("Complex EM density map information"))) .
-              $q->Tr($q->td("Upload EM density map",
-                             $self->help_link("map"), $q->br),
-                     $q->td($q->filefield({-name=>"map"}))) .
-              $q->Tr($q->td("Resolution",
-                             $self->help_link("resolution")),
-                     $q->td($q->textfield({-name=>"resolution",
-                                           -size=>"25"}))) .
-              $q->Tr($q->td("Voxel spacing",
-                             $self->help_link("spacing")),
-                     $q->td($q->textfield({-name=>"spacing",
-                                           -size=>"25"}))) .
-              $q->Tr($q->td("Contour level",
-                             $self->help_link("threshold")),
-                     $q->td($q->textfield({-name=>"threshold",
-                                           -size=>"25"}))) 
-} 
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#sequence"}, $q->b('Antigen sequence(s) (FASTA format)'))])) .
 
-sub get_general_information_input {
-    my $self = shift;
-    my $q = $self->cgi;
-    return
-               $q->Tr($q->td($q->h4("General information"))) .
-               $q->Tr($q->td("Email address",
-                              $self->help_link("email"), $q->br),
-                      $q->td($q->textfield({-name=>"email",
-                                            -value=>$self->email,
-                                            -size=>"25"}))) .
-               $q->Tr($q->td("Name your job"),
-                      $q->td($q->textfield({-name=>"job_name",
-                                            -size=>"25"}))) 
-}
+    $q->Tr($q->td({ -align=>'left', -colspan=>2}, $q->textarea('antigen','',10,80))) .
 
-sub get_optional_option {
-    my $self = shift;
-    my $q = $self->cgi;
-    return
-      $q->Tr($q->td($q->a({-href=>'#',
-                           -id=>'optionaltoggle',
-                           -onClick=>"toggle_visibility_tbody('optional', 'optionaltoggle'); " .
-                                     "return false;"},
-                                     "Show optional parameters"))) .
-             $q->tbody({-id=>'optional', -style=>'display:none'},
-                 $q->Tr($q->td("X origin",
-                                $self->help_link("origin"), $q->br),
-                        $q->td($q->textfield({-name=>"x_origin",
-                                              -size=>"25"}))) .
-                 $q->Tr($q->td("Y origin",
-                                $self->help_link("origin"), $q->br),
-                        $q->td($q->textfield({-name=>"y_origin",
-                                              -size=>"25"}))) .
-                 $q->Tr($q->td("Z origin",
-                                $self->help_link("origin"), $q->br),
-                        $q->td($q->textfield({-name=>"z_origin",
-                                              -size=>"25"})))
-                 );
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#email"}, $q->b('e-mail address'))]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name => 'email'})]),
+           $q->td({ -align=>'left'}, ['(the results are sent to this address)'])) .
 
-}
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#jobname"}, 'Job name')]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name => 'jobname', -maxlength => 10, -size => 10})])) .
 
-sub get_submit_parameter_help {
-    my $self = shift;
-    return [
-        $self->parameter("job_name", "Job name", 1),
-        $self->file_parameter("map", "Density map"),
-        $self->parameter("resolution", "Resolution for the density map"),
-        $self->parameter("spacing", "Spacing for the density map"),
-        $self->parameter("threshold", "Threshold for the density map"),
-        $self->parameter("x_origin", "X origin for the density map"),
-        $self->parameter("y_origin", "Y origin for the density map"),
-        $self->parameter("z_origin", "Z origin for the density map"),
-        $self->file_parameter("symm_pdb", "Input PDB for symmetry case"),
-        $self->parameter("cn_symmetry", "Number of Cn symmetry")
-    ];
+    $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
+
+    $q->end_table . $q->end_form;
 }
 
 sub get_submit_page {
-    my $self = shift;
-    my $q = $self->cgi;
+  my $self = shift;
+  my $q = $self->cgi;
+  print $q->header();
 
-    my $job_name  = $q->param('job_name')||"";          # user-provided job name
-    my $email     = $q->param('email')||"";             # user's e-mail
-    my $input_map = $q->upload('map');                  # user-provided density map 
-    my $resolution= $q->param('resolution')||"";        # user-provided resolution 
-    my $spacing   = $q->param('spacing')||"";           # user-provided spacing 
-    my $threshold = $q->param('threshold')||"";         # user-provided density threshold 
-    my $x_origin  = $q->param('x_origin')||"0";         # user-provided x origin for map 
-    my $y_origin  = $q->param('y_origin')||"0";         # user-provided y origin for map 
-    my $z_origin  = $q->param('z_origin')||"0";         # user-provided z origin for map 
-    my $input_symm_pdb = $q->upload('symm_pdb');        # uploaded file handle
-    my $cn_symmetry = $q->param('cn_symmetry')||"1";     # user-provided number of Cn symmetry 
+  # Get form parameters
+  my $mhctype = $q->param('mhctype');
+  my $mhcpdbfile = $q->param('mhcpdbfile');
+  my $tcrfile = $q->param('tcrfile');
+  my $antigen = $q->param('antigen');
+  my $email = $q->param('email');
 
-    if ($job_name eq "") {
-        throw saliweb::frontend::InputValidationError(
-                   "Job name is missing!");
-    }
-    if (!looks_like_number($resolution)) {
-        throw saliweb::frontend::InputValidationError(
-                   "Map resolution input is missing or invalid.");
-    }
-    if (!looks_like_number($spacing)) {
-        throw saliweb::frontend::InputValidationError(
-                   "Vector spacing input is missing or invalid.");
-    }
-    if (!looks_like_number($cn_symmetry)) {
-        throw saliweb::frontend::InputValidationError(
-                   "Cn symmetry input is missing or invalid.");
-    }
-    #if ((int($cn_symmetry) != $cn_symmetry) || $cn_symmetry < 1) {
-    if ($cn_symmetry < 1) {
-        throw saliweb::frontend::InputValidationError(
-                   "Cn symmetry input expects a positive integer.");
-    }
-    if (!looks_like_number($threshold)) {
-        throw saliweb::frontend::InputValidationError(
-                   "Contour level input is missing or invalid.");
-    }
-    if (!defined ($input_map)){
-        throw saliweb::frontend::InputValidationError(
-                   "Please upload input density map.");
-    }
-    my @input_non_symm_pdbs = ();
-    my @subunit_copies = ();
-    my @fitting_options = ();
-    for (my $i=0; $i < 5; $i++){
-        my $input_ns_pdb = $q->upload('non_symm_pdb' . $i);
-        if (defined ($input_ns_pdb)){
-           my $fit_option  = $q->param('fit_opt' . $i);
-           my $sub_copy = $q->param('subunit' . $i);
-           if ($sub_copy eq int($sub_copy) && $sub_copy < 1) {
-                throw saliweb::frontend::InputValidationError(
-                   "Number of copies for subunit $i is missing or invalid.");
-           }
-           push (@input_non_symm_pdbs, $input_ns_pdb); 
-           push (@subunit_copies, $sub_copy); 
-           push (@fitting_options, $fit_option); 
-        }
-    }
-    if (defined ($input_symm_pdb) && scalar(@input_non_symm_pdbs) > 0){
-        throw saliweb::frontend::InputValidationError(
-                   "Please select only one mode, symmetry or non-symmetry mode.");
-    }
-    if (!defined ($input_symm_pdb) && scalar(@input_non_symm_pdbs) == 0){
-        throw saliweb::frontend::InputValidationError(
-                   "Please select either symmetry or non-symmetry mode.");
-    }
-    if (defined ($input_symm_pdb) && $cn_symmetry eq ""){
-        throw saliweb::frontend::InputValidationError(
-                   "Please input the symmetry order.");
-    }
-    # Create job directory, add input files, then submit the job
-    my $job = $self->make_job($job_name);
-    my $jobdir = $job->directory;
+  my $jobname = $q->param('jobname');
 
-    my $output_file_name = $jobdir . "/input.mrc";
-    $self->write_input_map_file ($input_map, $output_file_name);
-   
-    my $symmetry_mode = 0;
-    if (defined ($input_symm_pdb)){
-        $symmetry_mode = 1;
-        $output_file_name = $jobdir . "/input.pdb";
-        $self->write_input_pdb_file ($input_symm_pdb, $output_file_name);
-    }
-    else{
-        my $subinput_file = $jobdir . "/input.subunit.list.txt";
-        open(SUBINPARAM, "> $subinput_file")
-            or throw saliweb::frontend::InternalError("Cannot open $subinput_file: $!");
-        my $k = 0;
-	foreach my $ns_pdb (@input_non_symm_pdbs){
-            my $fit_opt;
-            if ($fitting_options[$k] eq 'global fit'){
-               $fit_opt = 1;
-            }
-            else{ 
-               $fit_opt = 0;
-            }
-            my $protein_subunit_copy = $subunit_copies[$k];
-            my $file_name  = "ns_input_" . $k . ".pdb";
-            $output_file_name = $jobdir . "/" . $file_name;
-            $self->write_input_pdb_file ($ns_pdb, $output_file_name);
+  # Validate input
+  check_required_email($email);
 
-            for ( my $copy=0; $copy < $protein_subunit_copy; $copy++ ) {
-               my $protein_name  = "input" . $k . "_" . $copy;
-               print SUBINPARAM "$protein_name $file_name 1\n";
-            }
-            $k++;
-        }
-        close SUBINPARAM
-            or throw saliweb::frontend::InternalError("Cannot close $subinput_file: $!");
-    }
+  #create job directory time_stamp
+  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
+  my $time_stamp;
+  if(length $jobname > 0) {
+    $time_stamp = $jobname . "_" . $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  } else {
+    $time_stamp = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  }
+  my $job = $self->make_job($time_stamp, $self->email);
+  my $jobdir = $job->directory;
 
-    my $input_param = $jobdir . "/param.txt";
-    open(INPARAM, "> $input_param")
-       or throw saliweb::frontend::InternalError("Cannot open $input_param: $!");
-    print INPARAM "$resolution\n";
-    print INPARAM "$spacing\n";
-    print INPARAM "$threshold\n";
-    print INPARAM "$x_origin\n";
-    print INPARAM "$y_origin\n";
-    print INPARAM "$z_origin\n";
-    print INPARAM "$cn_symmetry\n";
-    print INPARAM "$symmetry_mode\n";
-
-    close INPARAM
-       or throw saliweb::frontend::InternalError("Cannot close $input_param: $!");
-
-    $job->submit($email);
-
-    # Inform the user of the job name and results URL
-    my $return=
-      $q->h1("Job Submitted") .
-      $q->hr .
-      $q->p("Your job " . $job->name . " has been submitted to the server." .
-            "<BR> Please see the job results <a href=\"" .
-            $job->results_url . "\">here</a> ");
-    if ($email) {
-        $return.=$q->p("<BR>You will be notified at $email when <a href=\"" .
-            $job->results_url . "\">job results</a> " . "are available.");
-    }
-
-    $return .=
-      $q->p("<BR>You can check on your job at the " .
-            "<a href=\"" . $self->queue_url .
-            "\">MultiFit current queue page</a>.").
-      #$q->p("The estimated execution time is ~90 min, depending on the load.").
-      $q->p("<BR>If you experience any problems or if you do not receive the results " .
-            "for more than 12 hours, please <a href=\"" .
-            $self->contact_url . "\">contact us</a>.") .
-      $q->p("<BR>Thank you for using our server and good luck in your research!");
-
-    return $return;
-}
-
-sub write_input_pdb_file {
-    my ($self, $input_pdb_file, $output_pdb_file) = @_;
-
-    my $file_contents = "";
-    my $atoms = 0;
-    while (<$input_pdb_file>) {
-        if (/^ATOM  /) { $atoms++; }
+  # input peptide-MHC file
+  my $pmhc_file_uploaded = 0;
+  my $pmhc_file_name = "";
+  if (length $mhctype > 5) { # mhc type given
+    $pmhc_file_name = $mhctype;
+  } else { # upload file
+    if(length $mhcpdbfile > 0 and $mhctype eq 'None') {
+      $pmhc_file_uploaded = 1;
+      my $upload_filenandle = $q->upload("pmhc_file_name");
+      my $file_contents = "";
+      my $atoms = 0;
+      while (<$upload_filenandle>) {
+        if (/^ATOM  /) { $atoms++; } #TODO: check chain IDs
         $file_contents .= $_;
+      }
+      if ($atoms == 0) {
+        throw saliweb::frontend::InputValidationError("PDB file contains no ATOM records!");
+      }
+      $pmhc_file_name = "$jobdir/pMHC.pdb";
+      open(INPDB, "> $pmhc_file_name")
+        or throw saliweb::frontend::InternalError("Cannot open $pmhc_file_name: $!");
+      print INPDB $file_contents;
+      close INPDB
+        or throw saliweb::frontend::InternalError("Cannot close $pmhc_file_name: $!");
+      $pmhc_file_name = "pMHC.pdb";
+    } else {
+      throw saliweb::frontend::InputValidationError("Error in input PDB: please specify PDB code or upload file");
     }
-    if ($atoms == 0) {
-        throw saliweb::frontend::InputValidationError(
-                   "PDB file contains no ATOM records!");
+  }
+
+  #tcr file
+  if(length $tcrfile > 0) {
+    my $upload_filehandle = $q->upload("tcrfile");
+    open UPLOADFILE, ">$jobdir/TCR.pdb";
+    my $atoms = 0;
+    while ( <$upload_filehandle> ) {
+      if (/^ATOM  /) { $atoms++; print UPLOADFILE; }
     }
-    open(INPDB, "> $output_pdb_file")
-       or throw saliweb::frontend::InternalError("Cannot open $output_pdb_file: $!");
-    print INPDB $file_contents;
-    close INPDB
-       or throw saliweb::frontend::InternalError("Cannot close $output_pdb_file: $!");
+    close UPLOADFILE;
+    my $filesize = -s "$jobdir/TCR.pdb";
+    if($filesize == 0 || $atoms == 0) {
+      throw saliweb::frontend::InputValidationError("You have uploaded an empty profile file: $tcrfile");
+    }
+  } else {
+    throw saliweb::frontend::InputValidationError("Please upload valid TCR file");
+  }
+
+  # antigen sequence
+  if(length $antigen > 0) {
+    open SEQFILE, ">$jobdir/antigen_seq.txt";
+    print SEQFILE $antigen;
+    close SEQFILE;
+    #TODO - validate sequence
+  } else {
+    throw saliweb::frontend::InputValidationError("Please provide antigen sequence");
+  }
+
+  my $input_line = $jobdir . "/input.txt";
+  open(INFILE, "> $input_line")
+    or throw saliweb::frontend::InternalError("Cannot open $input_line: $!");
+  my $cmd = "$pmhc_file_name TCR.pdb antigen_seq.txt";
+  print INFILE "$cmd\n";
+  close(INFILE);
+
+  my $data_file_name = $jobdir . "/data.txt";
+  open(DATAFILE, "> $data_file_name")
+    or throw saliweb::frontend::InternalError("Cannot open $data_file_name: $!");
+  print DATAFILE "$mhctype $mhcpdbfile $tcrfile $email $jobname\n";
+  close(DATAFILE);
+
+  $job->submit($email);
+
+  my $line = $job->results_url . " " . $pmhc_file_name . " " . $tcrfile . " " . $email;
+  `echo $line >> ../submit.log`;
+
+  # Inform the user of the job name and results URL
+  return $q->p("Your job " . $job->name . " has been submitted.") .
+    $q->p("You will receive an e-mail with results link once the job has finished");
+    #$q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
+
 }
 
-sub write_input_map_file {
-    my ($self, $input_map_file, $output_map_file) = @_;
-    my $map_contents = "";
-    while (<$input_map_file>) {
-        $map_contents .= $_;
-    }
-    open(INMAP, "> $output_map_file")
-       or throw saliweb::frontend::InternalError("Cannot open $output_map_file: $!");
-    print INMAP $map_contents;
-    close INMAP
-       or throw saliweb::frontend::InternalError("Cannot close $output_map_file: $!");
-}
 
 
 sub allow_file_download {
     my ($self, $file) = @_;
-    return ($file eq 'multifit.output'  or $file =~ /asmb.model..*pdb/ or 
-            $file =~ /asmb.model..*jpg/ or $file =~ /asmb.model..*chimerax/ or 
-            $file =~ /asmb.models.tar.gz/ or $file =~ /input.mrc/ or 
-            $file =~ 'scores.output' or $file =~ 'dockref.output' );
+    return ($file eq 'itcell.log' or
+            $file =~ 'scores.txt' or $file =~ 'antigen_seq.txt.out' );
 }
 
 sub get_file_mime_type {
@@ -469,185 +294,65 @@ sub get_file_mime_type {
 }
 
 sub get_results_page {
-    my ($self, $job) = @_;
-    my $q = $self->cgi;
-    if (-f "multifit.output") {
-        return $self->display_ok_symm_job($q, $job);
-    } elsif (-f "scores.output"){
-        return $self->display_ok_non_symm_job($q, $job);
-    } else{
-        return $self->display_failed_job($q, $job);
-    }
+  my ($self, $job) = @_;
+  my $q = $self->cgi;
+  if (-f "scores.txt" && -s "scores.txt") {
+    return $self->display_ok_job($q, $job);
+  } else {
+    return $self->display_failed_job($q, $job);
+  }
 }
 
-sub trim($) {
-   my $string = shift;
-   $string =~ s/^\s+//;
-   $string =~ s/\s+$//;
-   return $string;
-}
-
-sub read_multifit_output_file {
-   my %fit_solution;
-   if (! -f 'multifit.output'){
-       print "multifit.output file doesn't exist.\n";
-       return;
-   }
-   open(MULT_OUT, "< multifit.output") or die "Can't open multifit.output: $!";
-
-   my @header_array = map (trim($_), split (/\|/, <MULT_OUT>));
-   while(<MULT_OUT>){
-      my @line_array = split (/\|/, $_);
-      my $i = 0;
-	    foreach my $header (@header_array){
-   	    push @{ $fit_solution{$header} }, $line_array[$i++];
-	    }
-   }
-   close MULT_OUT or die "Can't close multifit.output: $!";
-
-   return %fit_solution;
-}
-
-sub read_scores_output_file {
-   my %ns_fit_solution;
-   if (! -f 'scores.output'){
-       print "scores.output file doesn't exist.\n";
-       return;
-   }
-   open(MULT_OUT, "< scores.output") or die "Can't open scores.output: $!";
-
-   my @header_array = ("tt", "comb_score", "fitting_score");
-   while(<MULT_OUT>){
-      my @line_array = split (/\|/, $_);
-      my $i = 0;
-	    foreach my $header (@header_array){
-   	    push @{ $ns_fit_solution{$header} }, $line_array[$i++];
-	    }
-   }
-   close MULT_OUT or die "Can't close scores.output: $!";
-
-   return %ns_fit_solution;
-}
-
-
-
-
-
-
-sub display_ok_symm_job {
+sub display_ok_job {
    my ($self, $q, $job) = @_;
-   my $return= $q->p("Job '<b>" . $job->name . "</b>' has completed.");
+   my $return = ''; #$q->p("Job '<b>" . $job->name . "</b>' has completed.");
+   my $sortColumn = 0;
 
-   my %fit_solution = read_multifit_output_file();
-   if (! defined(%fit_solution)){
-       return $self->display_failed_job($q, $job);
+   $return .=
+     $q->start_table({ -border=>0, -cellpadding=>2, -cellspacing=>0}) .
+       $q->Tr($q->td('Rank') . $q->td('Number') . $q->td('Peptide') .
+              $q->td('Total Z-Score') . $q->td('pMHC Z-score') . $q->td('TCR Z-score') .
+              $q->td('Total Score') . $q->td('pMHC score') . $q->td('TCR score'));
+
+   open(DATA, "scores.txt") or die "Couldn't open results file scores.txt\n";
+   my @solutions=();
+   my $transCounter = 0;
+   while(<DATA>) {
+     chomp;
+     my @tmp=split('\|',$_);
+     my @tmp1 = split(' ', $tmp[0]);
+     my $rank = $tmp1[0];
+     my $pepnum = $tmp1[1];
+     my $peptide = $tmp[1];
+     my @entry = ($rank, $pepnum, $peptide, $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7]);
+     push(@solutions, [@entry]);
+     $transCounter++;
    }
+   close DATA;
 
-   my $total_solution = scalar @{$fit_solution{"solution index"}};
-   my $contents = "";
-   my $total_column = 5;
-   my $j=0;
+   # sort
+   my @sortedSolutions = sort { @$a[$sortColumn] <=> @$b[$sortColumn]; } @solutions;
 
-   for ( my $row=0; $row < ($total_solution-1)/$total_column; $row++ )
-   {
-     my $td = "";
-     for ( my $column=0; $column < $total_column; $column++ ){
-       my $cc_score = 1-$fit_solution{"fitting score"}[$j]; 
-       $cc_score = sprintf ("%.3f", $cc_score);
-       my $pdb_file = $fit_solution{"solution filename"}[$j];
-       my (@filename) = split (/\./, $pdb_file);
-       my $image_file    = "asmb.model." . $filename[2] . ".jpg"; 
-       my $chimerax_file = "asmb.model." . $filename[2] . ".chimerax"; 
-       my $image_url    = $job->get_results_file_url($image_file);
-       my $chimerax_url = $job->get_results_file_url($chimerax_file);
-       my $job_url      = $job->get_results_file_url($pdb_file);
-
-       $td .= $q->td("<a href=\"$chimerax_url\"><img src=\"$image_url\"></img></a><br>" .
-                     "<a href=\"$job_url\">" . $pdb_file . "</a><br>" .
-                     "CC score=" . $cc_score);
-       $j++;
-     }
-     $contents .= $q->Tr($td);
+   # print range
+   my @colors=("#cccccc","#efefef");
+   for(my $i=0; $i<=$#sortedSolutions; $i++) {
+     $return .= $q->Tr($q->td($sortedSolutions[$i][0]) . $q->td($sortedSolutions[$i][1]) . $q->td($sortedSolutions[$i][2]) .
+                       $q->td($sortedSolutions[$i][3]) . $q->td($sortedSolutions[$i][4]) . $q->td($sortedSolutions[$i][5]) .
+                       $q->td($sortedSolutions[$i][6]) . $q->td($sortedSolutions[$i][7]) . $q->td($sortedSolutions[$i][8]));
    }
-   $return.= $q->p($q->table($contents));
- 
-   $return.= $q->p("<BR>Download <a href=\"" . 
-          $job->get_results_file_url("multifit.output") .
-          "\">multifit.output</a>, <a href=\"" .
-          $job->get_results_file_url("asmb_models.tar.gz") .
-          "\">asmb_models.tar.gz</a>.");
-
-   $return .= $job->get_results_available_time();
-
-   return $return;
-}
-
-sub display_ok_non_symm_job {
-   my ($self, $q, $job) = @_;
-   my $return= $q->p("Job '<b>" . $job->name . "</b>' has completed.");
-
-   my %ns_fit_solution = read_scores_output_file();
-   if (! defined(%ns_fit_solution)){
-       return $self->display_failed_job($q, $job);
-   }
-
-   my $total_solution = scalar @{$ns_fit_solution{"fitting_score"}};
-   my $contents = "";
-   my $total_column = 5;
-   my $j=0;
-
-   for ( my $row=0; $row < ($total_solution-1)/$total_column; $row++ )
-   {
-     my $td = "";
-     for ( my $column=0; $column < $total_column; $column++ ){
-       my $cc_score = 1-$ns_fit_solution{"fitting_score"}[$j]; 
-       $cc_score = sprintf ("%.3f", $cc_score);
-       my $pdb_file      = "asmb.model." . $j . ".pdb"; 
-       my $image_file    = "asmb.model." . $j . ".jpg"; 
-       my $chimerax_file = "asmb.model." . $j . ".chimerax"; 
-       my $image_url    = $job->get_results_file_url($image_file);
-       my $chimerax_url = $job->get_results_file_url($chimerax_file);
-       my $job_url      = $job->get_results_file_url($pdb_file);
-
-       $td .= $q->td("<a href=\"$chimerax_url\"><img src=\"$image_url\"></img></a><br>" .
-                     "<a href=\"$job_url\">" . $pdb_file . "</a><br>" .
-                     "CC score=" . $cc_score);
-       $j++;
-     }
-     $contents .= $q->Tr($td);
-   }
-   $return.= $q->p($q->table($contents));
-
-   $return.= $q->p("<BR>Download <a href=\"" . 
-          $job->get_results_file_url("scores.output") .
-          "\">scores.output</a>, <a href=\"" .
-          $job->get_results_file_url("dockref.output") .
-          "\">dockref.output</a>, <a href=\"" .
-          $job->get_results_file_url("asmb_models.tar.gz") .
-          "\">asmb_models.tar.gz</a>.");
-
-   $return .= $job->get_results_available_time();
-
+   $return .= $q->end_table;
    return $return;
 }
 
 sub display_failed_job {
-    my ($self, $q, $job) = @_;
-    my $return= $q->p("Your MultiFit job '<b>" . $job->name .
-                      "</b>' failed to produce any output models.");
-    $return.=$q->p("This is usually caused by incorrect inputs " .
-                   "(e.g. corrupt PDB file, inappropriate voxel spacing or contour level).");
-    #$return.=$q->p("For a discussion of some common input errors, please see the " .
-    #               $q->a({-href=>$self->help_url . "#errors"}, "help page") .
-    #               ".");
-    $return.= $q->p("For more information, you can download the " .
-                    "<a href=\"" . $job->get_results_file_url("failure.log") .
-                    "\">MultiFit log file</a>." .
-                    "<BR>If the problem is not clear from this log, " .
-                    "please <a href=\"" .
-                    $self->contact_url . "\">contact us</a> for " .
-                    "further assistance.");
-    return $return;
+  my ($self, $q, $job) = @_;
+  my $return= $q->p("Your job '<b>" . $job->name .
+                    "</b>' failed to produce any output.");
+  $return.=$q->p("This is usually caused by incorrect inputs " .
+                 "(e.g. corrupt PDB file).");
+  $return.= $q->p("For more information, you can download the " .
+                  $q->a({-href => $job->get_results_file_url("itcell.log")}, 'ITCell log file'));
+  return $return;
 }
 
 sub get_download_page {
