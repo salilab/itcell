@@ -7,7 +7,7 @@ use Scalar::Util qw(looks_like_number);
 our @ISA = "saliweb::frontend";
 
 sub new {
-    return saliweb::frontend::new(@_, @CONFIG@);
+    return saliweb::frontend::new(@_, "##CONFIG##");
 }
 
 sub start_html {
