@@ -67,10 +67,6 @@ sub get_help_page {
   return $self->get_text_file($file);
 }
 
-sub new {
-  return saliweb::frontend::new(@_, @CONFIG@);
-}
-
 sub get_navigation_lab {
   return "<div id=\"navigation_lab\">
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
