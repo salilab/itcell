@@ -76,11 +76,18 @@ sub get_navigation_lab {
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
       &bull;&nbsp; <a href=\"http://salilab.org/itcell\">Web Server</a>&nbsp;
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=help\">Help</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=FAQ\">FAQ</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=download\">Download</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
+       &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
       &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=links\">Links</a>&nbsp;</div>\n";
+      </div>\n";
+#  return "<div id=\"navigation_lab\">
+#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://salilab.org/itcell\">Web Server</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=help\">Help</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=FAQ\">FAQ</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=download\">Download</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
+#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=links\">Links</a>&nbsp;</div>\n";
 }
 
 
@@ -310,9 +317,9 @@ sub display_ok_job {
 
    $return .=
      $q->start_table({ -border=>0, -cellpadding=>2, -cellspacing=>0}) .
-       $q->Tr($q->td('Rank') . $q->td('Number') . $q->td('Peptide') .
-              $q->td('Total Z-Score') . $q->td('pMHC Z-score') . $q->td('TCR Z-score') .
-              $q->td('Total Score') . $q->td('pMHC score') . $q->td('TCR score'));
+       $q->Tr($q->th('Rank') . $q->th('Number') . $q->th('Peptide') .
+              $q->th('Total Z-Score') . $q->th('pMHC Z-score') . $q->th('TCR Z-score') .
+              $q->th('Total Score') . $q->th('pMHC score') . $q->th('TCR score'));
 
    open(DATA, "scores.txt") or die "Couldn't open results file scores.txt\n";
    my @solutions=();
