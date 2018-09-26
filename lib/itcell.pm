@@ -40,7 +40,7 @@ sub get_footer {
 <center>
 <hr />
 Contact:
-<script type='text/javascript'>escramble(\"dina\",\"salilab.org\")</script>
+<script type='text/javascript'>escramble(\"itcell\",\"salilab.org\")</script>
 </center>
 </div>
 FOOTER
