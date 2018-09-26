@@ -22,13 +22,12 @@ sub get_navigation_links {
 }
 
 sub get_header_page_title {
-  return "<div id='header1'>
-  <table> <tbody> <tr> <td halign='left'>
-  <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo.png\" alt='Logo' align = 'left' height = '40'></td></tr>
+  return "<table> <tbody> <tr> <td>
+  <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo.png\" alt='ITCell' align = 'left' height = '40' /></td></tr>
          <tr><td><h3><font color='#B22222'> Integrative T-cell epitope prediction</font></h3> </td></tr></table>
-      </td> <td halign='right'><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo2.png\" height = '70'></td></tr>
+      </td> <td><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo2.png\" height = '70' alt='ITCell logo'/></td></tr>
   </tbody>
-  </table></div>\n";
+  </table>\n";
 }
 
 
@@ -39,7 +38,9 @@ sub get_footer {
 <div id="address">
 <center>
 <hr />
-Contact: <script>escramble(\"dina\",\"salilab.org\")</script>
+Contact:
+<script type='text/javascript'>escramble(\"dina\",\"salilab.org\")</script>
+</center>
 </div>
 FOOTER
 }

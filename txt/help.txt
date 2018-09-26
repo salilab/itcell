@@ -1,49 +1,27 @@
-<link rel="stylesheet" type="text/css" href="/saliweb/css/server.css" />
-<link rel="stylesheet" type="text/css" href="html/js/tab.css" />
+<h3>ITCell Help Page</h3>
 
-<h3><font color='#B22222'>ITCell Help Page</font></h3>
-
-<div id=resulttable>
-
-
-<table><tr><td align="left">
-<H3><font color='#B22222'>Input Fields</font></H3>
-</td></tr></table>
-
-
-<table>
-<tr><td align ="left"> 
-
+<h4>Input Fields</h4>
 
 <ul>
-<a name="mhc"></a>
-<li><b>MHC type:</b> it is possible to pick the type from the drop down menu or upload your own peptide-MHC structure (or model) in PDB
-format. 
+<li><a name="mhc"></a><b>MHC type:</b> it is possible to pick the type from the drop down menu or upload your own peptide-MHC structure (or model) in PDB
+format. </li>
 
-<a name="tcrfile"></a>
-<li><b>TCR structure:</b> Please upload TCR structure (or model) in PDB format.
+<li><a name="tcrfile"></a><b>TCR structure:</b> Please upload TCR structure (or model) in PDB format.
+</li>
 
-<a name="sequence"></a>
-<li><b>Antigen sequence:</b> paste the sequence in FASTA format.
+<li><a name="sequence"></a><b>Antigen sequence:</b> paste the sequence in FASTA format.</li>
 
 
-<a name="email"></a>
-<li><b>e-mail address:</b> the link with the
-results of your request is sent to this address.
+<li><a name="email"></a><b>e-mail address:</b> the link with the
+results of your request is sent to this address.</li>
 
-<a name="jobname"></a>
-<li><b> Job name: </b> the server generates a default name based on the time stamp. If user has provided a job name, the server will use it as a prefix for the job name. <br><br>  
+<li><a name="jobname"></a><b>Job name: </b> the server generates a default name based on the time stamp. If user has provided a job name, the server will use it as a prefix for the job name.</li>
+</ul>
 
-</tr>
+<h4>Output Table</h4>
 
-</table>
+<p> The output table contains the peptides and their pMHCII, pMHCII-TCR and total normalized Z-scored as well as raw scores. The table is sorted by the total Z-score.</p>
 
-
-<table><tr><td align="left">
-<H3><font color='#B22222'>Output Table</font></H3>
-</td></tr></table>
-
-<p> The output table contains the peptides and their pMHCII, pMHCII-TCR and total normalized Z-scored as well as raw scores. The table is sorted by the total Z-score.
 <table border="0" cellspacing="0" cellpadding="2"><tr><th>Rank</th><th>Number</th><th>Peptide</th><th>Total Z-Score</th><th>pMHC Z-score</th><th>TCR Z-score</th><th>Total Score</th><th>pMHC score</th><th>TCR score</th></tr><tr><td>1</td><td>298</td><td> PKYVKQNTLKLA </td><td> -4.29 </td><td> -1.49 </td><td> -2.80 </td><td> -3834.901 </td><td> -1469.825 </td><td> -2365.076 </td></tr><tr><td>2</td><td>137</td><td> SGFFSRLNWLTK </td><td> -3.98 </td><td> -1.85 </td><td> -2.13 </td><td> -3811.219 </td><td> -1556.216 </td><td> -2255.003 </td></tr><tr><td>3</td><td>210</td><td> GSRPWVRGLSSR </td><td> -3.35 </td><td> -1.43 </td><td> -1.92 </td><td> -3677.416 </td><td> -1456.036 </td><td> -2221.38 </td></tr><tr><td>4</td><td>184</td><td> TSLYVQASGRVT </td><td> -3.09 </td><td> -2.33 </td><td> -0.76 </td><td> -3700.545 </td><td> -1669.618 </td><td> -2030.927 </td></tr><tr><td>5</td><td>95</td><td> PDYASLRSLVAS </td><td> -3.05 </td><td> -1.92 </td><td> -1.13 </td><td> -3664.554 </td><td> -1572.672 </td><td> -2091.882 </td></tr><tr><td>6</td><td>92</td><td> YDVPDYASLRSL </td><td> -2.99 </td><td> -1.94 </td><td> -1.05 </td><td> -3654.948 </td><td> -1576.865 </td><td> -2078.083 </td></tr><tr><td>7</td><td>194</td><td> VTVSTRRSQQTI </td><td> -2.81 </td><td> -1.86 </td><td> -0.95 </td><td> -3618.679 </td><td> -1557.399 </td><td> -2061.28 </td></tr><tr><td>8</td><td>178</td><td> STNQEQTSLYVQ </td><td> -2.79 </td><td> -2.45 </td><td> -0.34 </td><td> -3659.844 </td><td> -1697.544 </td><td> -1962.3 </td></tr><tr><td>9</td><td>150</td><td> GSTYPVLNVTMP </td><td> -2.70 </td><td> -1.22 </td><td> -1.48 </td><td> -3554.695 </td><td> -1406.122 </td><td> -2148.573 </td></tr><tr><td>10</td><td>226</td><td> WTIVKPGDVLVI </td><td> -2.58 </td><td> -1.31 </td><td> -1.27 </td><td> -3540.344 </td><td> -1426.903 </td><td> -2113.441 </td></tr><tr><td>11</td><td>300</td><td> YVKQNTLKLATG </td><td> -2.56 </td><td> -0.89 </td><td> -1.67 </td><td> -3508.883 </td><td> -1329.259 </td><td> -2179.624 </td></tr><tr><td>12</td><td>164</td><td> DNFDKLYIWGIH </td><td> -2.47 </td><td> -0.21 </td><td> -2.26 </td><td> -3444.223 </td><td> -1167.546 </td><td> -2276.677 </td></tr><tr><td>13</td><td>94</td><td> VPDYASLRSLVA </td><td> -2.45 </td><td> -1.08 </td><td> -1.37 </td><td> -3504.088 </td><td> -1373.17 </td><td> -2130.918 </td></tr><tr><td>14</td><td>234</td><td> VLVINSNGNLIA </td><td> -2.41 </td><td> -1.32 </td><td> -1.09 </td><td> -3515.827 </td><td> -1431.378 </td><td> -2084.449 </td></tr><tr><td>15</td><td>148</td><td> KSGSTYPVLNVT </td><td> -2.36 </td><td> -2.31 </td><td> -0.05 </td><td> -3577.71 </td><td> -1664.529 </td><td> -1913.181 </td></tr><tr><td>16</td><td>227</td><td> TIVKPGDVLVIN </td><td> -2.35 </td><td> -1.38 </td><td> -0.97 </td><td> -3508.534 </td><td> -1443.688 </td><td> -2064.846 </td></tr><tr><td>17</td><td>193</td><td> RVTVSTRRSQQT </td><td> -2.33 </td><td> -1.59 </td><td> -0.74 </td><td> -3520.188 </td><td> -1493.738 </td><td> -2026.45 </td></tr><tr><td>18</td><td>169</td><td> LYIWGIHHPSTN </td><td> -2.31 </td><td> 0.63 </td><td> -2.94 </td><td> -3358.835 </td><td> -970.534 </td><td> -2388.301 </td></tr><tr><td>19</td><td>304</td><td> NTLKLATGMRNV </td><td> -2.28 </td><td> -0.95 </td><td> -1.33 </td><td> -3467.157 </td><td> -1342.404 </td><td> -2124.753 </td></tr><tr><td>20</td><td>216</td><td> RGLSSRISIYWT </td><td> -2.18 </td><td> -1.48 </td><td> -0.70 </td><td> -3488.951 </td><td> -1468.158 </td><td> -2020.793 </td></tr>
 
 </table>

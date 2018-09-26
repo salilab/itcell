@@ -1,9 +1,5 @@
-<h3><font color='#B22222'>About ITCell </font></h3>
-
-<div id=resulttable>
-
-<table><tr><td align="left">
+<h3>About ITCell</h3>
 
 <p>
-
 ITCell is a method for prediction of T-cell epitopes whithin an input sequence for given MHCII and TCR sequences. The method integrates information about three stages of the immune response pathway: antigen cleavage, MHCII representation, and TCR recognition. First, the antigen is dissected into predicted naturally processed peptides based on the cleavage profiles of cathepsins S, B, and H. Second, we predict whether or not any of these peptides bind to a given MHCII sequence, based on the scores of the modeled peptide-MHCII complexes. Third, we predict whether or not any of the top scoring peptide-MHCII complexes can bind to a given TCR, based on the scores of modeled ternary peptide-MHCII-TCR complexes.
+</p>
