@@ -14,9 +14,9 @@ my $t = new saliweb::Test('itcell');
     my $self = $t->make_frontend();
     my $links = $self->get_navigation_links();
     isa_ok($links, 'ARRAY', 'navigation links');
-    like($links->[0], qr#<a href="http://modbase/top/">ITcell Home</a>#,
+    like($links->[0], qr#<a href="http://modbase/top/">ITCell Home</a>#,
          'Index link');
-    like($links->[1],
+    like($links->[2],
          qr#<a href="http://modbase/top/help.cgi\?type=help">Help</a>#,
          'Help link');
 }

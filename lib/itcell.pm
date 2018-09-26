@@ -10,62 +10,18 @@ sub new {
     return saliweb::frontend::new(@_, "##CONFIG##");
 }
 
-sub _display_content {
-  my ($self, $content) = @_;
-  print $content;
-}
-
-sub _display_web_page {
-  my ($self, $content) = @_;
-  # Call all prefix and suffix methods before printing anything, in case one
-  # of them raises an error
-  my $prefix = $self->start_html() . "<div id='container'>" . $self->get_header();
-  my $suffix = $self->get_footer() . "</div>\n" . $self->end_html;
-  my $navigation = $self->get_navigation_lab();
-  print $prefix;
-  print $navigation;
-  $self->_display_content($content);
-  print $suffix;
-}
-
-sub get_navigation_lab {
-  return "<div id=\"navigation_lab\">
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org/itcell\">Web Server</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=help\">Help</a>&nbsp;
-       &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
-      </div>\n";
-#  return "<div id=\"navigation_lab\">
-#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=about\">About ITCell</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://salilab.org/itcell\">Web Server</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell/help.cgi?type=help\">Help</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=FAQ\">FAQ</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=download\">Download</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
-#      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/itcell//help.cgi?type=links\">Links</a>&nbsp;</div>\n";
-}
-
-
 sub get_navigation_links {
     my $self = shift;
     my $q = $self->cgi;
     return [
-        $q->a({-href=>$self->index_url}, "ITcell Home"),
-        #$q->a({-href=>$self->download_url}, "Download"),
+        $q->a({-href=>$self->index_url}, "ITCell Home"),
+        $q->a({-href=>$self->about_url}, "About ITCell"),
         $q->a({-href=>$self->help_url}, "Help"),
-        $q->a({-href=>$self->contact_url}, "Contact")
-        #$q->a({-href=>$self->faq_url}, "FAQ"),
+        $q->a({-href=>$self->queue_url}, "Current Queue")
         ];
 }
 
-sub get_project_menu {
-    my $self = shift;
-    return "";
-}
-
-sub get_header {
+sub get_header_page_title {
   return "<div id='header1'>
   <table> <tbody> <tr> <td halign='left'>
   <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/itcell/html/logo.png\" alt='Logo' align = 'left' height = '40'></td></tr>
