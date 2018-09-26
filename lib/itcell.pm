@@ -10,24 +10,6 @@ sub new {
     return saliweb::frontend::new(@_, "##CONFIG##");
 }
 
-sub start_html {
-    my ($self, $style) = @_;
-    my $q = $self->{'CGI'};
-    $style = $style || "/saliweb/css/server.css";
-    my $style2 = "html/js/tab.css";
-    return $q->header(-status => $self->http_status) .
-           $q->start_html(-title => $self->{page_title},
-                          -style =>[{-src=>$style},
-                                    {-src=>$style2}],
-                          -script=>[{-language => 'JavaScript',
-                                     -src=>"/saliweb/js/salilab.js"},
-                                    {-language => 'JavaScript',
-                                     -src=>"html/js/tab.js"}
-                                   ]
-                          );
-}
-
-
 sub _display_content {
   my ($self, $content) = @_;
   print $content;
@@ -44,27 +26,6 @@ sub _display_web_page {
   print $navigation;
   $self->_display_content($content);
   print $suffix;
-}
-
-sub get_help_page {
-  my ($self, $display_type) = @_;
-  my $file;
-  if ($display_type eq "contact") {
-    $file = "contact.txt";
-  } elsif ($display_type eq "news") {
-    $file = "news.txt";
-  } elsif ($display_type eq "about") {
-    $file = "about.txt";
-  } elsif ($display_type eq "FAQ") {
-    $file = "FAQ.txt";
-  } elsif ($display_type eq "links") {
-    $file = "links.txt";
-  } elsif ($display_type eq "download") {
-    $file = "download.txt";
-  } else {
-    $file = "help.txt";
-  }
-  return $self->get_text_file($file);
 }
 
 sub get_navigation_lab {
@@ -356,11 +317,6 @@ sub display_failed_job {
   $return.= $q->p("For more information, you can download the " .
                   $q->a({-href => $job->get_results_file_url("itcell.log")}, 'ITCell log file'));
   return $return;
-}
-
-sub get_download_page {
-    my $self = shift;
-    return $self->get_text_file('download.txt');
 }
 
 1;
