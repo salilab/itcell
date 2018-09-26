@@ -17,6 +17,7 @@ sub get_navigation_links {
         $q->a({-href=>$self->index_url}, "ITCell Home"),
         $q->a({-href=>$self->about_url}, "About ITCell"),
         $q->a({-href=>$self->help_url}, "Help"),
+        $q->a({-href=>$self->download_url}, "Download"),
         $q->a({-href=>$self->queue_url}, "Current Queue")
         ];
 }
@@ -43,6 +44,16 @@ Contact:
 </center>
 </div>
 FOOTER
+}
+
+sub get_download_page {
+    return <<TEXT;
+<h3>Download</h3>
+
+<p>The source code of this web service is
+<a href="https://github.com/salilab/itcell">available on GitHub</a>.
+</p>
+TEXT
 }
 
 sub get_index_page {

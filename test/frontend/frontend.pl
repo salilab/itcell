@@ -44,6 +44,13 @@ my $t = new saliweb::Test('itcell');
          'get_footer');
 }
 
+# Test get_download_page
+{
+    my $self = $t->make_frontend();
+    my $txt = $self->get_download_page();
+    like($txt, qr/source code of this web service/ms, 'get_download_page');
+}
+
 # Test get_index_page
 {
     my $self = $t->make_frontend();
