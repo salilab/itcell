@@ -211,17 +211,6 @@ sub allow_file_download {
             $file =~ 'scores.txt' or $file =~ 'antigen_seq.txt.out' );
 }
 
-sub get_file_mime_type {
-    my ($self, $file) = @_;
-    if ($file =~ /asmb.model..*chimerax/){
-       return 'application/x-chimerax';
-    }
-    elsif ($file =~ /asmb.model..*pdb/){
-       return 'chemical/x-pdb';
-    }
-    return 'text/plain';
-}
-
 sub get_results_page {
   my ($self, $job) = @_;
   my $q = $self->cgi;
