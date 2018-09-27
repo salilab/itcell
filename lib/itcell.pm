@@ -196,9 +196,6 @@ sub get_submit_page {
 
   $job->submit($email);
 
-  my $line = $job->results_url . " " . $pmhc_file_name . " " . $tcrfile . " " . $email;
-  `echo $line >> ../submit.log`;
-
   # Inform the user of the job name and results URL
   return $q->p("Your job " . $job->name . " has been submitted.") .
     $q->p("You will receive an e-mail with results link once the job has finished");
