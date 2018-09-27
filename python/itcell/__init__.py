@@ -6,7 +6,6 @@ class Job(saliweb.backend.Job):
 
     def run(self):
         # TODO
-        os.chmod(".", 0775)
         par = open('input.txt', 'r')
         input_line = par.readline().strip()
         
@@ -18,9 +17,6 @@ perl /netapp/sali/dina/bayer/ITCell/scripts/runITCell.pl %s >& itcell.log
         r = self.runnercls(script)
         r.set_sge_options('-l arch=linux-x64,h_rt=300:00:00,mem_free=4G -p 0')
         return r
-
-    def complete(self):
-        os.chmod(".", 0775)
 
 
 def get_web_service(config_file):
