@@ -132,7 +132,7 @@ sub get_submit_page {
   } else { # upload file
     if(length $mhcpdbfile > 0 and $mhctype eq 'None') {
       $pmhc_file_uploaded = 1;
-      my $upload_filenandle = $q->upload("pmhc_file_name");
+      my $upload_filenandle = $q->upload("mhcpdbfile");
       my $file_contents = "";
       my $atoms = 0;
       while (<$upload_filenandle>) {
