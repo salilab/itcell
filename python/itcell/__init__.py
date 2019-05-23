@@ -11,8 +11,8 @@ class Job(saliweb.backend.Job):
         
         script = """
 module load Sali
-module load sali-libraries\n
-perl /netapp/sali/dina/bayer/ITCell/scripts/runITCell.pl %s >& itcell.log
+module load imp
+perl /wynton/home/sali/itcell/itcell-lib/scripts/runITCell.pl %s >& itcell.log
 """ % (input_line)
 
         r = self.runnercls(script)
