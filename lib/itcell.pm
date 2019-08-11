@@ -85,7 +85,7 @@ sub get_index_page {
     $q->Tr($q->td({ -align=>'left', -colspan=>2}, $q->textarea('antigen','',10,80))) .
 
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#email"}, $q->b('e-mail address'))]),
-           $q->td({ -align=>'left'}, [$q->textfield({-name => 'email'})]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name => 'email', -value => $self->email})]),
            $q->td({ -align=>'left'}, ['(the results are sent to this address)'])) .
 
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#jobname"}, 'Job name')]),
