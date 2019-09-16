@@ -1,0 +1,30 @@
+{% extends "saliweb/layout.html" %}
+
+{% block header_page_title %}
+<table> <tbody> <tr> <td>
+  <table><tr><td><img src="{{ url_for("static", filename="logo.png") }}" alt='ITCell' align = 'left' height = '40' /></td></tr>
+         <tr><td><h3><font color='#B22222'> Integrative T-cell epitope prediction</font></h3> </td></tr></table>
+      </td> <td><img src="{{ url_for("static", filename="logo2.png") }}" height = '70' alt='ITCell logo'/></td></tr>
+  </tbody>
+</table>
+{% endblock %}
+
+{% block navigation %}
+{{ get_navigation_links(
+       [(url_for("index"), "ITCell Home"),
+        (url_for("about"), "About ITCell"),
+        (url_for("help"), "Help"),
+        (url_for("download"), "Download"),
+        (url_for("job"), "Current Queue")])
+}}
+{% endblock %}
+
+{% block footer %}
+<div id="address">
+<center>
+<hr />
+Contact:
+<script type='text/javascript'>escramble("itcell","salilab.org")</script>
+</center>
+</div>
+{% endblock %}

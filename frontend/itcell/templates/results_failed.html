@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}ITCell Results{% endblock %}
+
+{% block body %}
+<p>Your job '<b>{{ job.name }}</b>' failed to produce any output.</p>
+
+<p>This is usually caused by incorrect inputs (e.g. corrupt PDB file).</p>
+
+<p>For more information, you can download the <a href="{{ job.get_results_file_url("itcell.log") }}">ITCell log file</a>.</p>
+{% endblock %}

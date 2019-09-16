@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %} Integrative T-cell Epitope Prediction{% endblock %}
+
+{% block body %}
+<form method="post" action="{{ url_for("job") }}"
+ enctype="multipart/form-data" name="itcell_form">
+  <table border="0" cellspacing="0" cellpadding="5">
+    <tr>
+      <td>Select MHC type or upload peptide-MHC structure in PDB format</td>
+    </tr>
+  </table>
+
+  <table border="0" cellspacing="0" cellpadding="5" width="99%">
+    <tr>
+      <td align="left"><a href="{{ url_for("help", _anchor="mhc") }}"><b>MHC type</b></a></td>
+      <td align="left">
+        <select name="mhctype">
+          <option selected="selected" value="None">None</option>
+          {%- for v in mhc_types %}
+          <option value="{{ v }}">{{ v }}</option>
+          {%- endfor %}
+        </select>
+      </td>
+      <td align="left"><b>or</b> upload PDB file:
+        <input type="file" name="mhcpdbfile"  size="10" />
+      </td>
+    </tr>
+    <tr>
+      <td align="left"><a href="{{ url_for("help", _anchor="tcrfile") }}"><b>TCR structure</b></a></td>
+      <td align="left"><input type="file" name="tcrfile"  size="10" /></td>
+    </tr>
+    <tr><td align="left"><a href="{{ url_for("help", _anchor="sequence") }}"><b>Antigen sequence(s) (FASTA format)</b></a></td></tr>
+    <tr><td align="left" colspan="2"><textarea name="antigen"  rows="10" cols="80"></textarea></td>
+    </tr>
+    <tr><td align="left"><a href="{{ url_for("help", _anchor="email") }}"><b>e-mail address</b></a> (optional)</td> <td align="left"><input type="text" name="email" value="{{ g.user.email }}" /></td> <td align="left">(the results are sent to this address)</td></tr>
+    <tr><td align="left"><a href="{{ url_for("help", _anchor="jobname") }}">Job name</a> (optional)</td> <td align="left"><input type="text" name="jobname"  size="10" maxlength="10" /></td></tr>
+    <tr><td align="left" colspan="2"><input type="submit" name=".submit" value="Submit" /><input type="reset"  name=".reset" value="Clear" /></td></tr>
+  </table>
+</form>
+{% endblock %}

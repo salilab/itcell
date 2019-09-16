@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}ITCell Results{% endblock %}
+
+{% block body %}
+<table border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <th>Rank</th>
+    <th>Number</th>
+    <th>Peptide</th>
+    <th>Total Z-Score</th>
+    <th>pMHC Z-score</th>
+    <th>TCR Z-score</th>
+    <th>Total Score</th>
+    <th>pMHC score</th>
+    <th>TCR score</th>
+  </tr>
+
+  {%- for result in results|sort(attribute='rank') %}
+  <tr>
+    <td>{{ result.rank }}</td>
+    <td>{{ result.number }}</td>
+    <td>{{ result.peptide }}</td>
+    <td>{{ result.total_z }}</td>
+    <td>{{ result.pmhc_z }}</td>
+    <td>{{ result.tcr_z }}</td>
+    <td>{{ result.total }}</td>
+    <td>{{ result.pmhc }}</td>
+    <td>{{ result.tcr }}</td>
+  </tr>
+  {%- endfor %}
+
+</table>
+{% endblock %}

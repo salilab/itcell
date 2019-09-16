@@ -1,0 +1,3 @@
+Import('env')
+
+env.InstallHTML(['logo.png', 'logo2.png'])

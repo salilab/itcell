@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}ITCell Job Submission{% endblock %}
+
+{% block body %}
+<h1>Job Submitted</h1>
+
+<hr />
+
+<p>Your job {{ job.name }} has been submitted.</p>
+
+<p>Results will be found at <a href="{{ job.results_url }}">this link</a>.</p>
+
+{%- if email %}
+<p>You will be notified at {{ email }} when job results are available.<p>
+{%- endif %}
+
+{% endblock %}

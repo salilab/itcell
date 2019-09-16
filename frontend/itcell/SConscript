@@ -1,0 +1,6 @@
+Import('env')
+
+SConscript('templates/SConscript')
+
+env.InstallPythonFrontend(['__init__.py', 'submit_page.py', 'results_page.py',
+                           'params.py'])
