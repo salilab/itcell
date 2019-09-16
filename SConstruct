@@ -5,12 +5,9 @@ env = saliweb.build.Environment(vars, ['conf/live.conf'], service_module='itcell
 Help(vars.GenerateHelpText(env))
 
 env.InstallAdminTools()
-env.InstallCGIScripts()
 
 Export('env')
 SConscript('backend/itcell/SConscript')
 SConscript('frontend/itcell/SConscript')
-SConscript('lib/SConscript')
 SConscript('html/SConscript')
-SConscript('txt/SConscript')
 SConscript('test/SConscript')

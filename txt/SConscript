@@ -1,3 +1,0 @@
-Import('env')
-
-env.InstallTXT(['help.txt', 'contact.txt', 'about.txt'])
