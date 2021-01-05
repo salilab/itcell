@@ -1,5 +1,5 @@
-[![Build Status](https://github.com/salilab/itcell/workflows/build/badge.svg?branch=master)](https://github.com/salilab/itcell/actions?query=workflow%3Abuild)
-[![codecov](https://codecov.io/gh/salilab/itcell/branch/master/graph/badge.svg)](https://codecov.io/gh/salilab/itcell)
+[![Build Status](https://github.com/salilab/itcell/workflows/build/badge.svg?branch=main)](https://github.com/salilab/itcell/actions?query=workflow%3Abuild)
+[![codecov](https://codecov.io/gh/salilab/itcell/branch/main/graph/badge.svg)](https://codecov.io/gh/salilab/itcell)
 
 This is the source code for [ITCell](https://salilab.org/itcell/), a web
 service for integrative T-cell epitope prediction. It uses
