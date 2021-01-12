@@ -1,6 +1,6 @@
 from flask import render_template, request, send_from_directory, abort
 import saliweb.frontend
-from saliweb.frontend import get_completed_job, Parameter, FileParameter
+from saliweb.frontend import get_completed_job
 import os
 from . import submit_page, results_page
 from .params import ALL_MHC_TYPES
@@ -53,7 +53,7 @@ def results(name):
 def results_file(name, fp):
     job = get_completed_job(name, request.args.get('passwd'))
     if (fp == 'itcell.log' or 'scores.txt' in fp
-        or 'antigen_seq.txt.out' in fp):
+            or 'antigen_seq.txt.out' in fp):
         return send_from_directory(job.directory, fp)
     else:
         abort(404)

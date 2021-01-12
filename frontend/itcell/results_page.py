@@ -1,10 +1,9 @@
-from flask import request, abort
 import saliweb.frontend
 import collections
 
-Result = collections.namedtuple('Result',
-    ['rank', 'number', 'peptide', 'total_z', 'pmhc_z', 'tcr_z', 'total',
-     'pmhc', 'tcr'])
+Result = collections.namedtuple(
+    'Result', ['rank', 'number', 'peptide', 'total_z', 'pmhc_z', 'tcr_z',
+               'total', 'pmhc', 'tcr'])
 
 
 def get_results(fh):

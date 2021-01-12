@@ -1,5 +1,5 @@
 import saliweb.backend
-import os, sys, stat
+
 
 class Job(saliweb.backend.Job):
     runnercls = saliweb.backend.WyntonSGERunner
@@ -8,7 +8,7 @@ class Job(saliweb.backend.Job):
         # TODO
         par = open('input.txt', 'r')
         input_line = par.readline().strip()
-        
+
         script = """
 module load Sali
 module load imp
@@ -24,4 +24,3 @@ def get_web_service(config_file):
     db = saliweb.backend.Database(Job)
     config = saliweb.backend.Config(config_file)
     return saliweb.backend.WebService(config, db)
-

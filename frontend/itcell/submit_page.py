@@ -1,9 +1,6 @@
 from flask import request
 import saliweb.frontend
-from werkzeug.utils import secure_filename
 from .params import ALL_MHC_TYPES
-import os
-import re
 
 
 def handle_new_job():

@@ -4,6 +4,7 @@ import saliweb.test
 import saliweb.backend
 import os
 
+
 class JobTests(saliweb.test.TestCase):
     """Check custom ITCell Job class"""
 

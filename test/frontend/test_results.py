@@ -28,9 +28,12 @@ class Tests(saliweb.test.TestCase):
     def test_ok_job(self):
         """Test display of OK job"""
         with saliweb.test.make_frontend_job('testjob2') as j:
-            j.make_file("scores.txt",
-"""     1  3 | NYKQKLATCDFY | -0.26 | 0.96 | -1.22 | -2523.349 | -1026.093 | -1497.256
-     2  1 | PKNYKQKLATCD | -0.15 | -1.38 | 1.23 | -2470.08 | -1142.602 | -1327.478""")
+            j.make_file(
+                "scores.txt",
+                "     1  3 | NYKQKLATCDFY | -0.26 | 0.96 | -1.22 "
+                "| -2523.349 | -1026.093 | -1497.256\n"
+                "     2  1 | PKNYKQKLATCD | -0.15 | -1.38 | 1.23 "
+                "| -2470.08 | -1142.602 | -1327.478")
             c = itcell.app.test_client()
             rv = c.get('/job/testjob2?passwd=%s' % j.passwd)
             r = re.compile(rb'Rank.*Number.*Peptide.*Total Z\-Score.*'
