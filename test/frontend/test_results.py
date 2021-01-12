@@ -33,10 +33,10 @@ class Tests(saliweb.test.TestCase):
      2  1 | PKNYKQKLATCD | -0.15 | -1.38 | 1.23 | -2470.08 | -1142.602 | -1327.478""")
             c = itcell.app.test_client()
             rv = c.get('/job/testjob2?passwd=%s' % j.passwd)
-            r = re.compile(b'Rank.*Number.*Peptide.*Total Z\-Score.*'
+            r = re.compile(rb'Rank.*Number.*Peptide.*Total Z\-Score.*'
                            b'NYKQKLATCDFY.*PKNYKQKLATCD',
                            re.MULTILINE | re.DOTALL)
-            self.assertRegexpMatches(rv.data, r)
+            self.assertRegex(rv.data, r)
 
     def test_failed_job(self):
         """Test display of failed job"""

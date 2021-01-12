@@ -10,12 +10,12 @@ class JobTests(saliweb.test.TestCase):
     def test_run_ok(self):
         """Test successful run method"""
         j = self.make_test_job(itcell.Job, 'RUNNING')
-        d = saliweb.test.RunInDir(j.directory)
-        open('input.txt', 'w').write('foo bar baz\n')
-        cls = j.run()
-        self.assert_(isinstance(cls, saliweb.backend.SGERunner),
-                     "SGERunner not returned")
-        os.unlink('input.txt')
+        with saliweb.test.working_directory(j.directory):
+            with open('input.txt', 'w') as fh:
+                fh.write('foo bar baz\n')
+            cls = j.run()
+            self.assertIsInstance(cls, saliweb.backend.SGERunner)
+            os.unlink('input.txt')
 
 
 if __name__ == '__main__':
