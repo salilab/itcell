@@ -1,5 +1,6 @@
 import unittest
 import saliweb.test
+import tempfile
 import os
 import re
 from werkzeug.datastructures import FileStorage
@@ -14,7 +15,7 @@ class Tests(saliweb.test.TestCase):
 
     def test_submit_page(self):
         """Test submit page"""
-        with saliweb.test.temporary_directory() as tmpdir:
+        with tempfile.TemporaryDirectory() as tmpdir:
             incoming = os.path.join(tmpdir, 'incoming')
             os.mkdir(incoming)
             itcell.app.config['DIRECTORIES_INCOMING'] = incoming
@@ -52,7 +53,7 @@ class Tests(saliweb.test.TestCase):
 
     def test_get_peptide_mhc_file_file(self):
         """Test get_peptide_mhc_file with user-provided PDB file"""
-        with saliweb.test.temporary_directory() as incoming:
+        with tempfile.TemporaryDirectory() as incoming:
             itcell.app.config['DIRECTORIES_INCOMING'] = incoming
 
             with itcell.app.app_context():
@@ -82,7 +83,7 @@ class Tests(saliweb.test.TestCase):
 
     def test_get_tcr_file(self):
         """Test get_tcr_file with provided TCR file"""
-        with saliweb.test.temporary_directory() as incoming:
+        with tempfile.TemporaryDirectory() as incoming:
             itcell.app.config['DIRECTORIES_INCOMING'] = incoming
 
             with itcell.app.app_context():
@@ -109,7 +110,7 @@ class Tests(saliweb.test.TestCase):
 
     def test_get_antigen(self):
         """Test get_antigen"""
-        with saliweb.test.temporary_directory() as incoming:
+        with tempfile.TemporaryDirectory() as incoming:
             itcell.app.config['DIRECTORIES_INCOMING'] = incoming
 
             with itcell.app.app_context():
