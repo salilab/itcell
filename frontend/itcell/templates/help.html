@@ -9,7 +9,15 @@
 
 <ul>
 <li><a name="mhc"></a><b>MHC type:</b> it is possible to pick the type from the drop down menu or upload your own peptide-MHC structure (or model) in PDB
-format. </li>
+format. If uploading a custom pMHC structure it must:
+  <ul>
+  <li>contain exactly three chains, labeled A, B and C in that order, where
+      the MHC is chains A and B, and the peptide chain C</li>
+  <li>be structurally aligned with ITCell's pre-provided pMHCs, such as
+      <a href="{{ url_for("static", filename="DRB1_1201.pdb") }}">DRB1*1201</a></li>
+  <li>contain at most one <tt>MODEL</tt> record.</li>
+  </ul>
+</li>
 
 <li><a name="tcrfile"></a><b>TCR structure:</b> Please upload TCR structure (or model) in PDB format.
 </li>

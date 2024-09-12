@@ -5,7 +5,8 @@
 {% block body %}
 <p>Your job '<b>{{ job.name }}</b>' failed to produce any output.</p>
 
-<p>This is usually caused by incorrect inputs (e.g. corrupt PDB file).</p>
+<p>This is usually caused by incorrect inputs (e.g. corrupt TCR PDB file,
+or an invalid <a href="{{ url_for("help", _anchor="mhc") }}">custom MHC file</a>).</p>
 
 <p>For more information, you can download the <a href="{{ job.get_results_file_url("itcell.log") }}">ITCell log file</a>.</p>
 {% endblock %}
