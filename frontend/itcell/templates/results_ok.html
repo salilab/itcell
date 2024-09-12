@@ -3,6 +3,8 @@
 {% block title %}ITCell Results{% endblock %}
 
 {% block body %}
+<p><a href="{{ job.get_results_file_url("scores.txt") }}">Download scores file</a></p>
+
 <table border="0" cellspacing="0" cellpadding="2">
   <tr>
     <th>Rank</th>
