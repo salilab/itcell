@@ -22,7 +22,7 @@ def handle_new_job():
     # write parameters
     with open(job.get_path('input.txt'), 'w') as fh:
         fh.write("%s TCR.pdb antigen_seq.txt\n" % pmhc_file_name)
-    with open(job.get_path('data.txt'), 'w', encoding='latin1') as fh:
+    with open(job.get_path('data.txt'), 'w', encoding='utf8') as fh:
         fh.write("%s %s %s %s %s\n"
                  % (mhctype, mhcpdbfile, tcrfile, email, jobname))
 
